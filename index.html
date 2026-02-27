@@ -281,12 +281,13 @@
         <p class="sub-header">Copyright 2026. 양인숙 All rights reserved.</p>
     </header>
 
+    <!-- 수정된 부분: event 대신 this를 전달 -->
     <nav class="tab-menu">
-        <button class="tab-btn active" onclick="openTab(event, 'motto')">급훈</button>
-        <button class="tab-btn" onclick="openTab(event, 'attendance')">출결</button>
-        <button class="tab-btn" onclick="openTab(event, 'etiquette')">예절</button>
-        <button class="tab-btn" onclick="openTab(event, 'safety')">학폭예방</button>
-        <button class="tab-btn" onclick="openTab(event, 'quiz')">퀴즈</button>
+        <button class="tab-btn active" onclick="openTab('motto', this)">급훈</button>
+        <button class="tab-btn" onclick="openTab('attendance', this)">출결</button>
+        <button class="tab-btn" onclick="openTab('etiquette', this)">예절</button>
+        <button class="tab-btn" onclick="openTab('safety', this)">학폭예방</button>
+        <button class="tab-btn" onclick="openTab('quiz', this)">퀴즈</button>
     </nav>
 
     <main>
@@ -522,4 +523,188 @@
                 </div>
 
                 <div style="background-color: #F0F8FF; padding: 10px; border-radius: 10px; margin-top: 15px; border: 2px solid #4A90E2;">
-                    <p style="margin: 0 0 10px 0; color: #0056b3;"><strong>🛡️ 현명한 대처 방
+                    <p style="margin: 0 0 10px 0; color: #0056b3;"><strong>🛡️ 현명한 대처 방법</strong></p>
+                    <ul style="margin: 0; padding-left: 20px; font-weight: bold; font-size: 0.9rem;">
+                        <li style="margin-bottom: 5px;">장난이 심하면 "하지 마"라고 <span class="warning-text">단호히</span> 말하기.</li>
+                        <li style="margin-bottom: 5px;">학폭 신고 전, <span class="highlight-box">선생님께 먼저</span> 도움 요청.</li>
+                        <li>괴롭힘 당하는 친구 발견 시 <strong>즉시 선생님에게 신고</strong>하기.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 퀴즈 -->
+        <section id="quiz" class="content-section">
+            <div class="card">
+                <div class="card-title">📝 쌤이 내는 퀴즈! (5문제)</div>
+                <p>가이드를 잘 읽었는지 확인해볼까요?</p>
+                <div id="quiz-container"></div>
+                <div id="score-box" style="display:none; text-align: center;">
+                    <h3 class="neon-text" id="final-score"></h3>
+                    <p id="final-msg"></p>
+                    <button class="btn-submit" onclick="resetQuiz()">다시 풀기</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    // 수정된 부분: 함수에서 element(클릭한 요소 자기 자신)를 받아 처리하도록 변경하여 모바일 호환성 100% 보장
+    function openTab(tabId, element) {
+        // 모든 탭 섹션 닫기
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(sec => sec.classList.remove('active'));
+        
+        // 클릭한 탭의 섹션만 열기
+        document.getElementById(tabId).classList.add('active');
+
+        // 모든 탭 버튼 색상 초기화
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        // 클릭한 버튼에만 활성화 색상 추가
+        if(element) {
+            element.classList.add('active'); 
+        }
+        
+        window.scrollTo(0,0);
+    }
+
+    // 퀴즈 데이터 전체 풀 (여기서 5개 랜덤 추출)
+    const fullQuizData =[
+        {
+            q: "우리 반을 위해 수고하면 선생님이 약속한 보상 기간은?",
+            a:["1년", "10년", "50년"],
+            correct: 2
+        },
+        {
+            q: "아파서 결석할 때 인정받기 위한 필수 서류는?",
+            a:["학부모님 문자", "친구의 증언", "진료확인서 또는 처방전"],
+            correct: 2
+        },
+        {
+            q: "[체험학습] 수요일에 여행을 간다면 신청서는 언제까지?",
+            a: ["월요일", "화요일", "지난주 금요일"],
+            correct: 2
+        },
+        {
+            q: "교무실 입장 시 올바른 행동은?",
+            a:["문을 벌컥 열고 들어간다", "노크 후 소속과 이름을 밝힌다", "아무 말 없이 자리에 앉는다"],
+            correct: 1
+        },
+        {
+            q: "친구가 장난으로 자꾸 몸을 툭툭 칠 때 대처법은?",
+            a:["같이 때린다", "\"하지 마\"라고 단호히 말하고 선생님께 알린다", "그냥 참는다"],
+            correct: 1
+        },
+        {
+            q: "담임 선생님에게 문자가 왔을 때 올바른 행동은?",
+            a:["읽고 무시한다", "나중에 생각나면 한다", "반드시 회신한다"],
+            correct: 2
+        },
+        {
+            q: "우리 반 급훈으로 알맞은 것은?",
+            a:["성실", "대박", "우정"],
+            correct: 0
+        },
+        {
+            q: "학교폭력으로 전학(8호) 조치를 받으면 생기부 기록은 언제까지 보전될까요?",
+            a:["졸업과 동시에 삭제", "졸업 후 2년 보전", "졸업 후 4년 보전"],
+            correct: 2
+        },
+        {
+            q: "친구에게 절대로 해서는 안 되는 말은?",
+            a:["고마워", "미안해", "패드립(부모님 욕)"],
+            correct: 2
+        },
+        {
+            q: "아파서 못 올 때 연락 마감 시간은?",
+            a:["8시 30분", "9시", "점심시간"],
+            correct: 0
+        }
+    ];
+
+    let currentQuestions =[];
+    let currentQuizIndex = 0;
+    let score = 0;
+
+    // 퀴즈 섞기 및 5개 추출 함수
+    function setupQuiz() {
+        let shuffled = [...fullQuizData];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] =[shuffled[j], shuffled[i]];
+        }
+        currentQuestions = shuffled.slice(0, 5);
+        currentQuizIndex = 0;
+        score = 0;
+    }
+
+    function loadQuiz() {
+        const container = document.getElementById('quiz-container');
+        if (currentQuizIndex >= currentQuestions.length) {
+            showResult();
+            return;
+        }
+
+        const data = currentQuestions[currentQuizIndex];
+        let html = `<p style="font-weight:bold; font-size:1.1rem; margin-bottom:15px;">문제 ${currentQuizIndex+1}/5<br>${data.q}</p>`;
+        
+        data.a.forEach((option, index) => {
+            html += `<button class="quiz-option" onclick="checkAnswer(${index})">${option}</button>`;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function checkAnswer(selectedIndex) {
+        const data = currentQuestions[currentQuizIndex];
+        
+        if (selectedIndex === data.correct) {
+            alert("정답입니다! ⭕");
+            score++;
+        } else {
+            alert("틀렸어요 ❌ 다시 생각해보세요!");
+        }
+        
+        currentQuizIndex++;
+        loadQuiz();
+    }
+
+    function showResult() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const scoreBox = document.getElementById('score-box');
+        scoreBox.style.display = 'block';
+        
+        const finalScore = document.getElementById('final-score');
+        const finalMsg = document.getElementById('final-msg');
+
+        finalScore.innerText = `${score} / 5 점`;
+
+        if (score === 5) {
+            finalMsg.innerText = "완벽해요! 100점! 우리 반 에이스 등극! 👑";
+        } else if (score >= 3) {
+            finalMsg.innerText = "잘했어요! 조금만 더 공부하면 완벽할 거예요! 😉";
+        } else {
+            finalMsg.innerText = "가이드를 다시 한번 꼼꼼히 읽어볼까요? 💪";
+        }
+    }
+
+    function resetQuiz() {
+        setupQuiz();
+        document.getElementById('quiz-container').style.display = 'block';
+        document.getElementById('score-box').style.display = 'none';
+        loadQuiz();
+    }
+
+    // 초기 실행
+    window.onload = function() {
+        setupQuiz();
+        loadQuiz();
+    }
+
+</script>
+
+</body>
+</html>
