@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1학년 3반 생활 가이드</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu&family=Gowun+Dodum&family=Jua&display=swap');
+
+        :root {
+            --primary: #FF9F9F; /* 살구색 */
+            --secondary: #9EE3C4; /* 민트 */
+            --accent: #FFD966; /* 개나리색 */
+            --text: #333;
+            --bg: #FFFDF5;
+            --neon: #FF00FF;
+            --danger: #FF6B6B;
+        }
+
+        body {
+            font-family: 'Gowun Dodum', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #app-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        header {
+            background-color: var(--primary);
+            padding: 20px 10px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 10px rgba(255, 159, 159, 0.4);
+        }
+
+        h1 {
+            font-family: 'Jua', sans-serif;
+            color: white;
+            margin: 0;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+        
+        .sub-header {
+            font-family: 'Gowun Dodum', sans-serif;
+            color: white;
+            margin: 8px 0 0 0;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+
+        .neon-text {
+            color: #FF5E5E;
+            font-weight: bold;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+        
+        .neon-blue {
+            color: #4A90E2;
+            font-weight: bold;
+            text-shadow: 0 0 5px #b3d4fc;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FF5E5E; }
+            to { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FF5E5E; }
+        }
+
+        .tab-menu {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 5px;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab-btn {
+            border: none;
+            background: none;
+            font-family: 'Jua', sans-serif;
+            font-size: 1rem;
+            color: #888;
+            cursor: pointer;
+            padding: 8px 2px;
+            transition: 0.3s;
+            flex: 1;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            font-weight: bold;
+        }
+
+        .content-section {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.5s;
+            padding-bottom: 80px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: #F9F9F9;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #EEE;
+            position: relative;
+        }
+
+        .card-title {
+            font-family: 'Jua', sans-serif;
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .highlight-box {
+            background-color: var(--accent);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* 퀴즈 스타일 */
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            font-family: 'Gowun Dodum', sans-serif;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Jua', sans-serif;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .warning-text {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* 출결 예시 달력 느낌 */
+        .calendar-example {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 15px 5px;
+            border-radius: 10px;
+            border: 2px dashed var(--secondary);
+            margin-top: 10px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .day-box {
+            display: flex;
+            flex-direction: column;
+            width: 20%;
+            position: relative;
+        }
+        .day-label { font-family: 'Jua'; font-size: 1rem; color: #555; }
+        .day-desc { font-size: 0.7rem; color: #888; margin-top: 5px;}
+        .arrow { font-size: 1rem; color: #ddd; }
+        .d-day { color: white; background: var(--primary); border-radius: 5px; padding: 2px; }
+        .d-target { color: white; background: var(--secondary); border-radius: 5px; padding: 2px; }
+
+        /* 학폭 조치사항 및 기준 테이블 스타일 */
+        .violence-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            background: white;
+        }
+        .violence-table th {
+            background-color: #ffeaea;
+            color: #d63031;
+            border: 1px solid #ffcccc;
+            padding: 8px 4px;
+            font-family: 'Jua';
+        }
+        .violence-table td {
+            border: 1px solid #eee;
+            padding: 8px 4px;
+            vertical-align: middle;
+            text-align: center;
+            word-break: keep-all;
+        }
+        /* 기준 안내 테이블용 스타일 추가 */
+        .std-table td { text-align: left; font-size: 0.85rem; }
+        .std-table td:first-child { text-align: center; font-weight: bold; background-color: #fff9f9; width: 25%; }
+        
+        .level-low { background-color: #f0fff4; } 
+        .level-mid { background-color: #fffaf0; } 
+        .level-high { background-color: #fff5f5; } 
+        .level-max { background-color: #ffeaea; }
+
+        .reward-badge {
+            display: inline-block;
+            background: #FFD700;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-5px);}
+            60% {transform: translateY(-3px);}
+        }
+
+        .check-list li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <header>
+        <h1>🌱 1학년 3반 생활 가이드</h1>
+        <p class="sub-header">Copyright 2026. 양인숙 All rights reserved.</p>
+    </header>
+
+    <nav class="tab-menu">
+        <button class="tab-btn active" onclick="openTab(event, 'motto')">급훈</button>
+        <button class="tab-btn" onclick="openTab(event, 'attendance')">출결</button>
+        <button class="tab-btn" onclick="openTab(event, 'etiquette')">예절</button>
+        <button class="tab-btn" onclick="openTab(event, 'safety')">학폭예방</button>
+        <button class="tab-btn" onclick="openTab(event, 'quiz')">퀴즈</button>
+    </nav>
+
+    <main>
+        <!-- 1. 급훈 (성실) -->
+        <section id="motto" class="content-section active">
+            <div class="card" style="border-color: var(--accent); text-align: center;">
+                <div class="card-title" style="justify-content: center;">🌟 우리 반 급훈</div>
+                <h2 style="font-size: 3.5rem; margin: 20px 0; color: #333; letter-spacing: 10px;">성 실</h2>
+                <p>"성실함이야말로 여러분의 인생을<br>결정짓는 가장 중요한 무기입니다."</p>
+            </div>
+
+            <!-- 특별 약속 카드 -->
+            <div class="card" style="border: 2px solid #FFD700; background-color: #fffeeb; text-align: center;">
+                <div class="reward-badge" style="margin-top: 0;">🎁 특별 약속</div>
+                <p style="font-weight: bold; color: #555; margin-top: 15px; font-size: 1.1rem;">
+                    우리 반을 위해서 수고하면<br>
+                    <span class="neon-blue">50년 동안 보상합니다!</span>
+                </p>
+                <p style="font-size: 0.8rem; color: #888;">(선생님은 약속을 꼭 지킵니다 😉)</p>
+            </div>
+            
+            <!-- 우리반 에티켓 -->
+            <div class="card">
+                <div class="card-title">✨ 우리반 에티켓</div>
+                <ul class="check-list" style="font-size: 0.9rem; letter-spacing: -0.5px; list-style: none; padding-left: 0;">
+                    <li><strong>😀 인사:</strong> 밝은 미소로 먼저 인사하기.</li>
+                    <li>🧹 <strong>책임:</strong> 1인 1역 & 청소 성실히 하기.</li>
+                    <li>🙋‍♀️ <strong>참여:</strong> 수업 집중! 활동은 즐겁게.</li>
+                    <li>👂 <strong>배려:</strong> 고운 말 쓰고 경청하기.</li>
+                    <li>✨ <strong>정돈:</strong> 사물함 정리 & 뒷마무리.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 2. 출결 -->
+        <section id="attendance" class="content-section">
+            <div class="card">
+                <div class="card-title">⏰ 출결 관리 철저</div>
+                <ul style="padding-left: 20px; line-height: 1.8;">
+                    <li><strong>아플 때:</strong> <span class="neon-text">오전 8:30 전까지</span> 선생님께 연락!</li>
+                    <li>
+                        <strong>질병결석 인정 조건:</strong><br>
+                        👉 <span class="highlight-box">진료확인서 또는 처방전</span> 반드시 제출.
+                    </li>
+                    <li>
+                        <strong>연락 없거나 서류 미제출 시?</strong><br>
+                        → <span class="warning-text">미인정(지각, 결석)</span> 처리.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-title">✈️ 체험학습 신청 (중요!)</div>
+                <p>반드시 <strong>주말 제외 3일 전</strong> 신청서 제출!</p>
+                <div class="calendar-example">
+                    <div class="day-box">
+                        <span class="day-label d-day">금</span>
+                        <span class="day-desc warning-text">제출마감<br>(3일전)</span>
+                    </div>
+                    <div class="arrow">➡</div>
+                    <div class="day-box" style="opacity: 0.4;">
+                        <span class="day-label">토/일</span>
+                        <span class="day-desc">계산제외</span>
+                    </div>
+                    <div class="arrow">➡</div>
+                    <div class="day-box">
+                        <span class="day-label">월/화</span>
+                        <span class="day-desc">2/1일전</span>
+                    </div>
+                    <div class="arrow">➡</div>
+                    <div class="day-box">
+                        <span class="day-label d-target">수</span>
+                        <span class="day-desc">출발!</span>
+                    </div>
+                </div>
+                <hr>
+                <p style="text-align: center; font-weight: bold; color: blue; background: #E8F5FF; padding: 10px; border-radius: 5px;">
+                    🚩 다녀와서는 3일 내에<br>보고서 제출 필수!
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. 예절 -->
+        <section id="etiquette" class="content-section">
+            <div class="card">
+                <div class="card-title">🙇‍♂️ 선생님께 지켜요</div>
+                <p style="text-align: center; font-weight: bold; margin-bottom: 20px; color: #555;">
+                    "친근함은 OK, 선 넘는 행동은 NO!"
+                </p>
+                <strong style="display:block; margin-bottom:10px; border-left: 4px solid #DEB887; padding-left: 8px;">교무실 출입 예절</strong>
+                <ul style="font-size: 1rem; padding-left: 20px; line-height: 1.8; margin-top: 5px;">
+                    <li>입장: 들어가기 전 노크 똑똑!</li>
+                    <li>"1학년 3반 OOO입니다" 소속 밝히기.</li>
+                    <li>태도: <span class="highlight-box">바른 자세로 공손하게 대화하기.</span></li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">📞 전화 예절</div>
+                <ul style="font-size: 1rem; padding-left: 20px; line-height: 1.8; margin-top: 5px;">
+                    <li>"안녕하세요 OOO입니다" 자기소개 먼저.</li>
+                    <li>너무 늦은 밤 시간에는 문자 남기기.</li>
+                    <li>공손한 말투 사용하기.</li>
+                    <li><span class="highlight-box">담임쌤 연락(전화/문자)에 반드시 회신하기!</span></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-title">👫 친구끼리 지켜요</div>
+                <div style="border: 2px solid red; padding: 10px; border-radius: 10px; margin-bottom: 10px; background-color: #fff0f0;">
+                    <h3 style="margin: 0; color: red; text-align: center;">🚫 패드립 절대 금지 🚫</h3>
+                    <p style="text-align: center; font-size: 0.9rem; margin: 5px 0;">부모님 욕은 절대 용서받지 못합니다.</p>
+                </div>
+                <ul style="padding-left: 20px;">
+                    <li><span class="warning-text">뒷담화 하지 않기</span> (결국 다 돌아옵니다).</li>
+                    <li><strong>모둠 활동:</strong> 무임승차 금지 (책임감 갖기).</li>
+                    <li><strong>청소 시간:</strong> 내 임무 완수하기.</li>
+                    <li>친구 물건 허락 없이 손대지 않기.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 4. 학교폭력 예방 -->
+        <section id="safety" class="content-section">
+            <div class="card" style="border-color: red;">
+                <div class="card-title">🚨 학교폭력 ZERO</div>
+                
+                <strong style="font-size: 1.1rem; color: #ff5e5e; display:block; margin-bottom:10px; text-align:center;">📢 학교폭력 기준 안내</strong>
+                <table class="violence-table std-table">
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>해당하는 행동들</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>👊 신체폭력</td>
+                            <td>때리기, 밀치기, 발 걸기, 길 막기,<br>장난이라며 툭툭 치는 행위</td>
+                        </tr>
+                        <tr>
+                            <td>🤬 언어폭력</td>
+                            <td>욕설, 조롱, 패드립, 싫어하는 별명,<br>뒷담화(험담)</td>
+                        </tr>
+                        <tr>
+                            <td>💸 금품갈취</td>
+                            <td>돈/물건/데이터 뺏기, 빌리고 안 갚기</td>
+                        </tr>
+                        <tr>
+                            <td>📱 사이버</td>
+                            <td>단톡방 저격/욕설, 몰래 촬영 및 유포,<br>카톡 감옥(강제 초대)</td>
+                        </tr>
+                        <tr>
+                            <td>🙅 따돌림</td>
+                            <td>이유 없이 무시하기, 다른 친구 막기</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="background:#fff0f0; color:red; font-weight:bold; text-align:center; padding:5px; border-radius:5px; margin-top:5px; font-size:0.9rem;">
+                    ※ "장난이었어요"는 통하지 않습니다!
+                </div>
+                <br>
+
+                <p><strong>📉 조치사항 및 기록 삭제 시기</strong></p>
+                <table class="violence-table">
+                    <thead>
+                        <tr>
+                            <th width="32%">조치(호수)</th>
+                            <th width="43%">내용</th>
+                            <th width="25%">기록 삭제 시기</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 1~3호 -->
+                        <tr class="level-low">
+                            <td>1호 서면 사과</td>
+                            <td style="text-align:left; font-size:0.75rem;">학생이 서면을 학교에 제출</td>
+                            <td rowspan="3" style="font-weight:bold; color:#2d98da;">졸업과 동시에 삭제</td>
+                        </tr>
+                        <tr class="level-low">
+                            <td>2호 접촉, 협박,<br>보복행위 금지</td>
+                            <td style="text-align:left; font-size:0.75rem;">가해 학생이 피해 학생에게 접근 금지</td>
+                        </tr>
+                        <tr class="level-low">
+                            <td>3호 교내봉사</td>
+                            <td style="text-align:left; font-size:0.75rem;">학교 내에서 봉사활동</td>
+                        </tr>
+
+                        <!-- 4~5호 -->
+                        <tr class="level-mid">
+                            <td>4호 사회봉사</td>
+                            <td style="text-align:left; font-size:0.75rem;">사회복지기관, 공공기관, 행정기관 봉사</td>
+                            <td rowspan="2" style="font-weight:bold; color:#eb9f14;">졸업 후<br>2년 보전<br><span style="font-size:0.65rem; color:#666; font-weight:normal;">(심의 통해 삭제 가능)</span></td>
+                        </tr>
+                        <tr class="level-mid">
+                            <td>5호 특별교육 이수<br>또는 심리치료</td>
+                            <td style="text-align:left; font-size:0.75rem;">학교 내외 전문가를 통한 특별교육 이수, 심리치료</td>
+                        </tr>
+
+                        <!-- 6~7호 -->
+                        <tr class="level-high">
+                            <td>6호 출석정지</td>
+                            <td style="text-align:left; font-size:0.75rem;">5일~10일 간 출석정지 조치<br>(출석 일수가 모자란다면 유급)</td>
+                            <td rowspan="2" style="font-weight:bold; color:#e84118;">졸업 후<br>4년 보전<br><span style="font-size:0.65rem; color:#666; font-weight:normal;">(심의 통해 삭제 가능)</span></td>
+                        </tr>
+                        <tr class="level-high">
+                            <td>7호 학급 교체</td>
+                            <td style="text-align:left; font-size:0.75rem;">가해 학생의 학급을 같은 학교 내 다른 반으로 교체</td>
+                        </tr>
+
+                        <!-- 8호, 9호 -->
+                        <tr class="level-max" style="border-top:2px solid #ffcccc;">
+                            <td><strong>8호 전학</strong></td>
+                            <td style="text-align:left; font-size:0.75rem;">가해 학생을 전학시키는 조치(강제전학)</td>
+                            <td><span class="warning-text">졸업 후<br>4년 보전</span></td>
+                        </tr>
+                        <tr class="level-max">
+                            <td><strong>9호 퇴학 처분</strong></td>
+                            <td style="text-align:left; font-size:0.75rem;">가해 학생 퇴학<br>(고등학생만 해당)</td>
+                            <td><span class="warning-text" style="color:red; font-weight:bold;">영구보존<br>(삭제 불가)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- 학폭징계단계별 입시 불이익 -->
+                <div style="background-color: #FFF0F0; padding: 15px; border-radius: 10px; margin-top: 15px; border: 2px solid #FF6B6B;">
+                    <h3 style="margin: 0 0 10px 0; color: #D63031; font-family: 'Jua', sans-serif;">🚨 학폭징계단계별 입시 불이익</h3>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem; line-height: 1.6;">
+                        <li style="margin-bottom: 5px;"><strong>8호, 9호</strong>는 대학 입시를 진행하는 동안 생활기록부 삭제 대상이 아니기에 <strong>항시 불이익</strong>이 따름.</li>
+                        <li style="margin-bottom: 5px;">대입에 학교폭력 가해 기록을 <strong>의무 반영</strong>함. 일부 대학에서는 가해 이력이 있는 경우 <strong>‘부적격’</strong> 처리함.</li>
+                        <li>학폭징계 사실은 모든 대학 입시 전형에서 <strong>감점 요소</strong>임.</li>
+                    </ul>
+                </div>
+
+                <div style="background-color: #F0F8FF; padding: 10px; border-radius: 10px; margin-top: 15px; border: 2px solid #4A90E2;">
+                    <p style="margin: 0 0 10px 0; color: #0056b3;"><strong>🛡️ 현명한 대처 방
